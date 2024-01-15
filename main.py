@@ -24,16 +24,16 @@ def adjust_score(row, y):
     except KeyError:
         return np.nan
 
-# Plot feature importance
-def plot_feature_importance(model, label, X):
-    feature_importance = pd.DataFrame({'feature': list(X.columns), 'importance': model.feature_importances_}).sort_values('importance', ascending=False)
-
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='importance', y='feature', data=feature_importance)
-    plt.title(f'Feature Importance for {label}')
-    plt.tight_layout()
+# Plot coefficients
+def plot_coef(model, label):
+    col = ['last_1_score', 'last_2_score', 'last_3_score', 'last_4_score', 'last_5_score', 'last_6_score']
+    coef = model.coef_
+    sns.barplot(x=col, y=coef)
+    plt.title(f'Coefficients for {label} Linear Regression')
+    plt.xlabel('Feature')
+    plt.ylabel('Coefficient')
+    plt.xticks(rotation=45)
     plt.show()
-
 
 # Create a linear regression model and print scores
 def linear_regression(data, y, label='-'):
@@ -98,8 +98,8 @@ def linear_regression(data, y, label='-'):
         mse = mean_squared_error(y_true, y_pred)
         print(label, apparatus, mse)
 
-    # Plot feature importance
-    plot_feature_importance(lm, label, X_train)
+    # Plot coefficients
+    plot_coef(lm, label)
 
     return lm
 
